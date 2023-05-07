@@ -15,15 +15,14 @@ type ConfirmPost struct {
 	GroupID int    `json:"group_id"`
 }
 
-type Event struct{}
+type Event struct {
+}
 
 func NewEvent() *Event {
 	return &Event{}
 }
 
 func (e *Event) NewMessage(c *gin.Context) {
-	//confirmToken := os.Getenv("VK_SECRET_KEY")
-	//token := os.Getenv("VK_API_KEY")
 
 	var data *entities.Event
 

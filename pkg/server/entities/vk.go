@@ -1,17 +1,28 @@
 package entities
 
 type Event struct {
-	Type    string      `json:"type"`
-	Object  interface{} `json:"object"`
 	GroupID int         `json:"group_id"`
+	Type    string      `json:"type"`
+	EventID string      `json:"event_id"`
+	Version string      `json:"v"`
+	Object  interface{} `json:"object"`
+	Secret  string      `json:"secret"`
 }
 
 type MessageNew struct {
-	Message    `json:"message"`
+	Message    MessageRequest `json:"message"`
 	ClientInfo `json:"client_info"`
 }
 
-type Message struct {
+type MessageEvent struct {
+	UserID                int    `json:"user_id"`
+	PeerID                int    `json:"peer_id"`
+	EventID               string `json:"event_id"`
+	Payload               string `json:"payload"`
+	ConversationMessageId int    `json:"conversation_message_id"`
+}
+
+type MessageRequest struct {
 	ID                    int    `json:"id"`
 	Date                  int    `json:"date"`
 	PeerID                int    `json:"peer_id"`
@@ -28,4 +39,12 @@ type ClientInfo struct {
 	InlineKeyboard bool     `json:"inline_keyboard"`
 	Carousel       bool     `json:"carousel"`
 	LangID         int      `json:"lang_id"`
+}
+
+type MessageResponse struct {
+	Text        string `json:"text"`
+	PeerID      int    `json:"peer_id"`
+	AccessToken string `json:"access_token"`
+	Version     string `json:"v"`
+	RandomID    int    `json:"random_id"`
 }
