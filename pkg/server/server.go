@@ -12,7 +12,7 @@ func Serve() {
 
 	router := gin.Default()
 
-	router.POST("/", event.Index)
+	router.POST("/", event.NewMessage)
 
 	log.Fatal(router.Run())
 }

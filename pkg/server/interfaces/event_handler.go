@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/constants"
+	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/entities"
 	"github.com/gin-gonic/gin"
 )
 
@@ -20,12 +21,28 @@ func NewEvent() *Event {
 	return &Event{}
 }
 
-func (e *Event) Index(c *gin.Context) {
+func (e *Event) NewMessage(c *gin.Context) {
+	//confirmToken := os.Getenv("VK_SECRET_KEY")
+	//token := os.Getenv("VK_API_KEY")
+
+	var data *entities.Event
+
+	if err := c.ShouldBindJSON(&data); err != nil {
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf(constants.RequestFailed, err))
+		log.Println(err)
+	}
+
+	fmt.Println(data)
+
+	c.JSON(http.StatusOK, data)
+}
+
+func (e *Event) Confirm(c *gin.Context) {
 	var cfm *ConfirmPost
 
 	if err := c.ShouldBindJSON(&cfm); err != nil {
 		c.JSON(http.StatusInternalServerError, fmt.Sprintf(constants.RequestFailed, err))
-		log.Println()
+		log.Println(err)
 	}
 
 	log.Println(cfm)
