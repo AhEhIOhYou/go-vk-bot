@@ -1,16 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
-	"github.com/gin-gonic/gin"
+	"github.com/AhEhIOhYou/go-vk-bot/pkg/server"
 )
 
 func main() {
-	fmt.Println("hello vk api")
+	log.Println("hello vk api")
 
-	router := gin.Default()
-
-	log.Fatal(router.Run())
+	server.Serve()
 }
