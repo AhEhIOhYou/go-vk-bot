@@ -30,5 +30,5 @@ func (e *Event) Index(c *gin.Context) {
 
 	log.Println(cfm)
 
-	c.Data(http.StatusOK, "charset=utf8", []byte("8bb97950"))
+	c.Data(http.StatusOK, "charset=utf8", []byte("ef5c48d6"))
 }
