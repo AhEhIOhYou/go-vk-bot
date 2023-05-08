@@ -8,6 +8,7 @@ import (
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/constants"
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/entities"
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/infrastructure"
+	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/infrastructure/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -39,14 +40,22 @@ func (e *EventService) NewMessage(c *gin.Context) {
 
 	fmt.Println(data.Type)
 
-	objectRaw := data.Object.(entities.MessageNew)
+	// Object can be different types, so i use interface
 
-	fmt.Println(objectRaw)
+	objectRaw := data.Object.(map[string]interface{})
 
+	var message entities.MessageNew
+
+	if err := utils.ConvertMapToStruct(objectRaw, &message); err != nil {
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf(constants.RequestFailed, err))
+		log.Println(err)
+	}
+
+	fmt.Println(message)
 
 	e.VkApp.SendMessage(&entities.MessageResponse{
-		Text:     "test-response-1",
-		UserID:   320353081,
+		Text:   "test-response-1",
+		UserID: 320353081,
 	})
 
 	c.JSON(http.StatusOK, data)
