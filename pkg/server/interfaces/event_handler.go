@@ -65,7 +65,7 @@ func (e *EventService) NewMessage(c *gin.Context) {
 		}
 		messageResponse.Message = apod.Title
 		messageResponse.Message += "\n" + apod.Explanation
-		messageResponse.Message += apod.HDUrl
+		messageResponse.Message += "\n" + apod.HDUrl
 	case "Test #2":
 		messageResponse.Message = "do - 2"
 	case "Test #3":
