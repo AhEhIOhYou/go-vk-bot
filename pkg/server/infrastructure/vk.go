@@ -79,23 +79,24 @@ func (r *VkRepo) SendMessage(message *entities.MessageResponse) error {
 	message.Keyboard = newKayboard()
 
 	encoder := qs.NewEncoder()
-	values, err := encoder.Values(message)
+	test := message.Keyboard
+	values, err := encoder.Values(test)
 	if err != nil {
 		return fmt.Errorf(constants.QueryCreationError, err)
 	}
 
-	req.URL.RawQuery = values.Encode()
+	// req.URL.RawQuery = values.Encode()
 
 	log.Println("Query:")
-	log.Println(req.URL.RawQuery)
+	log.Println(values.Encode())
 
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return fmt.Errorf(constants.RequestFailed, err)
-	}
+	// resp, err := http.DefaultClient.Do(req)
+	// if err != nil {
+	// 	return fmt.Errorf(constants.RequestFailed, err)
+	// }
 
-	log.Println("Resp:")
-	log.Println(resp.Body)
+	// log.Println("Resp:")
+	// log.Println(resp.Body)
 
 	return nil
 }
