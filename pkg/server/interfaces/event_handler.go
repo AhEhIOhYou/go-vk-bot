@@ -54,10 +54,10 @@ func (e *EventService) NewMessage(c *gin.Context) {
 
 	// fmt.Println(message)
 
-	// e.VkApp.SendMessage(&entities.MessageResponse{
-	// 	Message: "test-response-3",
-	// 	UserID:  320353081,
-	// })
+	e.VkApp.SendMessage(&entities.MessageResponse{
+		Message: "test-response-4",
+		UserID:  320353081,
+	})
 
 	c.Data(http.StatusOK, "charset=utf8", []byte("ok"))
 }
