@@ -30,7 +30,7 @@ func NewNasaMethodNames(apod string) *NasaMethodNames {
 
 func (r *NasaRepo) APOD() (*entities.APOD, error) {
 
-	var method string = r.methodNames.apod
+	// var method string = r.methodNames.apod
 
 	// Prepare values
 	apodRequest := &entities.APODRequset{
