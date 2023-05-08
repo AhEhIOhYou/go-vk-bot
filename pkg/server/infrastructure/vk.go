@@ -82,17 +82,13 @@ func (r *VkRepo) SendMessage(message *entities.MessageResponse) error {
 	message.AccessToken = r.accessToken
 	message.Version = r.version
 	message.RandomID = rand.Intn(92233720368)
-	message.Keyboard = keyboardQuery
-
-	log.Println("Coded:")
-	log.Println(keyboardQuery)
 
 	values, err := qs.Values(message)
 	if err != nil {
 		return fmt.Errorf(constants.QueryCreationError, err)
 	}
 
-	req.URL.RawQuery = values.Encode()
+	values.Add("keyboard",keyboardQuery)
 
 	log.Println("Query:")
 	log.Println(values.Encode())
