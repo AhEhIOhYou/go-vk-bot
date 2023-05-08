@@ -68,7 +68,7 @@ func (r *VkRepo) SendMessage(message *entities.MessageResponse) error {
 
 	var method string = r.methodNames.sendMessage
 
-	req, err := http.NewRequest("GET", r.url+method, nil)
+	_, err := http.NewRequest("GET", r.url+method, nil)
 	if err != nil {
 		return fmt.Errorf(constants.RequestCreationError, err)
 	}
