@@ -14,9 +14,16 @@ func NewRepo() (*Repos, error) {
 			accessToken: os.Getenv("VK_API_KEY"),
 			version:     os.Getenv("VK_API_VERSION"),
 			methodNames: NewVkMethodNames(
-				os.Getenv("VK_API_METHOD_MESSAGE_SEND")),
+				os.Getenv("VK_API_METHOD_MESSAGE_SEND"),
+			),
 		},
-		Nasa: NasaRepo{},
+		Nasa: NasaRepo{
+			url: os.Getenv("NASA_API_URL"),
+			accessToken: os.Getenv("NASA_API_KEY"),
+			methodNames: NewNasaMethodNames(
+				os.Getenv("NASA_API_METHOD_APOD"),
+			),
+		},
 	}, nil
 
 }
