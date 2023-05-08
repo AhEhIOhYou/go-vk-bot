@@ -12,6 +12,8 @@ func KeyboardToQuery(keyboard *entities.Keyboard) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	jsonStr := string(jsonBytes)
 
-	return url.QueryEscape(string(jsonBytes)), nil
+	encodedStr := url.QueryEscape(jsonStr)
+	return encodedStr, nil
 }

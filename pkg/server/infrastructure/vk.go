@@ -84,6 +84,9 @@ func (r *VkRepo) SendMessage(message *entities.MessageResponse) error {
 	message.RandomID = rand.Intn(92233720368)
 	message.Keyboard = keyboardQuery
 
+	log.Println("Coded:")
+	log.Println(keyboardQuery)
+
 	values, err := qs.Values(message)
 	if err != nil {
 		return fmt.Errorf(constants.QueryCreationError, err)

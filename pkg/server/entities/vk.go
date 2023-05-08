@@ -51,18 +51,18 @@ type MessageResponse struct {
 }
 
 type Keyboard struct {
-	OneTime bool       `json:"one_time" url:"one_time"`
-	Buttons [][]Button `json:"buttons" url:"buttons"`
-	Inline  bool       `json:"inline" url:"inline"`
+	OneTime bool       `json:"one_time"`
+	Inline  bool       `json:"inline"`
+	Buttons [][]Button `json:"buttons"`
 }
 
 type Button struct {
-	Color  string       `json:"color" url:"color"`
-	Action ButtonAction `json:"action" url:"action"`
+	Color  string       `json:"color,omitempty"`
+	Action ButtonAction `json:"action"`
 }
 
 type ButtonAction struct {
-	Type    string `json:"type" url:"type"`
-	Label   string `json:"label" url:"label"`
-	Payload string `json:"payload" url:"payload"`
+	Type    string `json:"type"`
+	Label   string `json:"label"`
+	Payload string `json:"payload,omitempty"`
 }
