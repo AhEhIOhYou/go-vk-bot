@@ -43,24 +43,12 @@ func (r *NasaRepo) APOD() (*entities.APOD, error) {
 		return nil, fmt.Errorf(constants.QueryCreationError, err)
 	}
 
-	// Prepare request
-	req, err := http.NewRequest("GET", r.url+method, nil)
+	// Execute request
+	path := r.url+method + "?" + values.Encode()
+	log.Println(path)
+	resp, err := http.Get(path)
 	if err != nil {
 		return nil, fmt.Errorf(constants.RequestCreationError, err)
-	}
-
-	req.URL.RawQuery = values.Encode()
-
-	log.Println(req.URL.RawQuery)
-	log.Println(req.URL.Path)
-	log.Println(req.URL.Host)
-	log.Println(req.URL.Scheme)
-
-
-	// Execute request
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return nil, fmt.Errorf(constants.RequestFailed, err)
 	}
 
 	log.Println(resp.Request.URL)
