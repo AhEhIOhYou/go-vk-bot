@@ -3,6 +3,8 @@ package server
 import (
 	"fmt"
 	"log"
+	"math/rand"
+	"time"
 
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/constants"
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/infrastructure"
@@ -11,6 +13,8 @@ import (
 )
 
 func Serve() {
+
+	rand.Seed(time.Now().Unix())
 
 	services, err := infrastructure.NewRepo()
 	if err != nil {

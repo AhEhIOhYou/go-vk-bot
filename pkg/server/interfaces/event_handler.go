@@ -39,9 +39,15 @@ func (e *EventService) NewMessage(c *gin.Context) {
 
 	fmt.Println(data.Type)
 
-	objectRaw := data.Object.(map[string]interface{})
+	objectRaw := data.Object.(entities.MessageNew)
 
 	fmt.Println(objectRaw)
+
+
+	e.VkApp.SendMessage(&entities.MessageResponse{
+		Text:     "test-response-1",
+		UserID:   320353081,
+	})
 
 	c.JSON(http.StatusOK, data)
 }

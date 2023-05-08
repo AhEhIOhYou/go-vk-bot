@@ -3,6 +3,7 @@ package infrastructure
 import (
 	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
 
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/constants"
@@ -48,6 +49,7 @@ func (r *VkRepo) SendMessage(message *entities.MessageResponse) error {
 
 	message.AccessToken = r.accessToken
 	message.Version = r.version
+	message.RandomID = rand.Intn(92233720368)
 
 	vals, err := querystring.Values(message)
 	if err != nil {

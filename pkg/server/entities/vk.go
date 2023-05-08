@@ -11,7 +11,7 @@ type Event struct {
 
 type MessageNew struct {
 	Message    MessageRequest `json:"message"`
-	ClientInfo `json:"client_info"`
+	ClientInfo ClientInfo     `json:"client_info"`
 }
 
 type MessageEvent struct {
