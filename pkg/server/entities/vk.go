@@ -42,9 +42,9 @@ type ClientInfo struct {
 }
 
 type MessageResponse struct {
-	Text        string `json:"text"`
-	PeerID      int    `json:"peer_id"`
-	AccessToken string `json:"access_token"`
-	Version     string `json:"v"`
-	RandomID    int    `json:"random_id"`
+	Text        string `json:"text" url:"text"`
+	UserID      int    `json:"user_id" url:"user_id"`
+	AccessToken string `json:"access_token" url:"access_token"`
+	Version     string `json:"v" url:"v"`
+	RandomID    int    `json:"random_id" url:"random_id"`
 }

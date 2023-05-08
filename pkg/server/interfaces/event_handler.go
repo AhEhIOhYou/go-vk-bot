@@ -7,6 +7,7 @@ import (
 
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/constants"
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/entities"
+	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/infrastructure"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,14 +16,19 @@ type ConfirmPost struct {
 	GroupID int    `json:"group_id"`
 }
 
-type Event struct {
+type EventService struct {
+	VkApp   infrastructure.VkRepo
+	NasaApp infrastructure.NasaRepo
 }
 
-func NewEvent() *Event {
-	return &Event{}
+func NewEventService(vkRepo infrastructure.VkRepo, nasaRepo infrastructure.NasaRepo) *EventService {
+	return &EventService{
+		VkApp:   vkRepo,
+		NasaApp: nasaRepo,
+	}
 }
 
-func (e *Event) NewMessage(c *gin.Context) {
+func (e *EventService) NewMessage(c *gin.Context) {
 
 	var data *entities.Event
 
@@ -31,12 +37,16 @@ func (e *Event) NewMessage(c *gin.Context) {
 		log.Println(err)
 	}
 
-	fmt.Println(data)
+	fmt.Println(data.Type)
+
+	objectRaw := data.Object.(map[string]interface{})
+
+	fmt.Println(objectRaw)
 
 	c.JSON(http.StatusOK, data)
 }
 
-func (e *Event) Confirm(c *gin.Context) {
+func (e *EventService) Confirm(c *gin.Context) {
 	var cfm *ConfirmPost
 
 	if err := c.ShouldBindJSON(&cfm); err != nil {
