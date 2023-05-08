@@ -2,7 +2,6 @@ package entities
 
 type APODRequset struct {
 	ApiKey string `json:"api_key" url:"api_key"`
-	Date   string `json:"date" url:"date"`
 	Count  int    `json:"count,omitempty" url:"count,omitempty"`
 }
 

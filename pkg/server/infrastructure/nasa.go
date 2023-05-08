@@ -34,7 +34,6 @@ func (r *NasaRepo) APOD() (*entities.APOD, error) {
 	// Prepare values
 	apodRequest := &entities.APODRequset{
 		ApiKey: r.accessToken,
-		Date:   "today",
 		Count:  1,
 	}
 
@@ -58,6 +57,8 @@ func (r *NasaRepo) APOD() (*entities.APOD, error) {
 	if err != nil {
 		return nil, fmt.Errorf(constants.RequestFailed, err)
 	}
+
+	log.Println(resp.Status)
 
 	defer resp.Body.Close()
 
