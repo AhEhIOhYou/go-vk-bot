@@ -44,7 +44,7 @@ func (r *NasaRepo) APOD() (*entities.APOD, error) {
 	}
 
 	// Prepare request
-	req, err := http.NewRequest("GET", r.url+method, nil)
+	req, err := http.NewRequest("GET", "https://api.nasa.gov/planetary/apod", nil)
 	if err != nil {
 		return nil, fmt.Errorf(constants.RequestCreationError, err)
 	}
