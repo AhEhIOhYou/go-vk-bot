@@ -36,6 +36,7 @@ func (e *EventService) NewMessage(c *gin.Context) {
 	if err := c.ShouldBindJSON(&data); err != nil {
 		c.JSON(http.StatusInternalServerError, fmt.Sprintf(constants.RequestFailed, err))
 		log.Println(err)
+		return
 	}
 
 	// Object can be different types, so i use interface
@@ -60,6 +61,7 @@ func (e *EventService) NewMessage(c *gin.Context) {
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, fmt.Sprintf(constants.RequestFailed, err))
 			log.Println(err)
+			return
 		}
 	case "Test #2":
 		messageResponse.Message = "do - 2"
@@ -80,6 +82,7 @@ func (e *EventService) NewMessage(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, fmt.Sprintf(constants.RequestFailed, err))
 		log.Println(err)
+		return
 	}
 
 	c.Data(http.StatusOK, "charset=utf8", []byte("ok"))
@@ -91,6 +94,7 @@ func (e *EventService) Confirm(c *gin.Context) {
 	if err := c.ShouldBindJSON(&cfm); err != nil {
 		c.JSON(http.StatusInternalServerError, fmt.Sprintf(constants.RequestFailed, err))
 		log.Println(err)
+		return
 	}
 
 	log.Println(cfm)

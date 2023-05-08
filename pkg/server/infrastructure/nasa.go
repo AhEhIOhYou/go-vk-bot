@@ -3,6 +3,7 @@ package infrastructure
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -58,11 +59,18 @@ func (r *NasaRepo) APOD() (*entities.APOD, error) {
 		return nil, fmt.Errorf(constants.RequestFailed, err)
 	}
 
+	log.Println(resp.Request.URL)
+
 	defer resp.Body.Close()
 
-	decoder := json.NewDecoder(resp.Body)
 	var apod entities.APOD
-	err = decoder.Decode(&apod)
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf(constants.DecodingJSONError, err)
+	}
+
+	err = json.Unmarshal(body, &apod)
 	if err != nil {
 		return nil, fmt.Errorf(constants.DecodingJSONError, err)
 	}
