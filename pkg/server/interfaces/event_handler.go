@@ -38,21 +38,45 @@ func (e *EventService) NewMessage(c *gin.Context) {
 		log.Println(err)
 	}
 
-	fmt.Println(data.Type)
-
 	// Object can be different types, so i use interface
 
-	var messageNew entities.MessageNew
-	jsonData, _ := json.Marshal(data.Object)
-	json.Unmarshal(jsonData, &messageNew)
+	switch data.Type {
+	case "message_new":
+		var messageNew entities.MessageNew
+		jsonData, _ := json.Marshal(data.Object)
+		json.Unmarshal(jsonData, &messageNew)
+		fmt.Println("Message text:")
+		fmt.Println(messageNew.Message.Text)
 
-	fmt.Println("Message text:")
-	fmt.Println(messageNew.Message.Text)
+		err := e.VkApp.SendMessage(&entities.MessageResponse{
+			Message: "test-response-8",
+			UserID:  messageNew.Message.PeerID,
+		})
 
-	e.VkApp.SendMessage(&entities.MessageResponse{
-		Message: "test-response-7",
-		UserID:  messageNew.Message.PeerID,
-	})
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, fmt.Sprintf(constants.RequestFailed, err))
+			log.Println(err)
+		}
+	case "message_event":
+		var messageEvent entities.MessageEvent
+		jsonData, _ := json.Marshal(data.Object)
+		json.Unmarshal(jsonData, &messageEvent)
+		fmt.Println("Event id:")
+		fmt.Println(messageEvent.EventID)
+		fmt.Println("Event payload:")
+		fmt.Println(messageEvent.Payload)
+
+		err := e.VkApp.SendEvent(&entities.EventResponse{
+			EventID: messageEvent.EventID,
+			UserID:  messageEvent.UserID,
+			PeerID:  messageEvent.PeerID,
+		})
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, fmt.Sprintf(constants.RequestFailed, err))
+			log.Println(err)
+		}
+	}
 
 	c.Data(http.StatusOK, "charset=utf8", []byte("ok"))
 }

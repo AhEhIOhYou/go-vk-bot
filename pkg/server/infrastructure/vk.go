@@ -14,7 +14,8 @@ import (
 )
 
 type VkMethodNames struct {
-	sendMessage string
+	sendMessage            string
+	sendMessageEventAnswer string
 }
 
 type VkRepo struct {
@@ -24,9 +25,10 @@ type VkRepo struct {
 	methodNames *VkMethodNames
 }
 
-func NewVkMethodNames(sendMessage string) *VkMethodNames {
+func NewVkMethodNames(sendMessage, sendMessageEventAnswer string) *VkMethodNames {
 	return &VkMethodNames{
-		sendMessage: sendMessage,
+		sendMessage:            sendMessage,
+		sendMessageEventAnswer: sendMessageEventAnswer,
 	}
 }
 
@@ -62,9 +64,9 @@ func newKayboard() entities.Keyboard {
 				{
 					Color: "negative",
 					Action: entities.ButtonAction{
-						Type:  "callback",
-						Label: "Test #3",
-						Payload: "",
+						Type:    "callback",
+						Label:   "Test #3",
+						Payload: "btn#3",
 					},
 				},
 			},
@@ -72,16 +74,21 @@ func newKayboard() entities.Keyboard {
 	}
 }
 
+func newPopUpEvent() entities.EventData {
+	return entities.EventData{
+		Type: "show_snackbar",
+		Text: "Hello there, ahehiohyou!",
+	}
+}
+
+var keyboard = newKayboard()
+var popUpEvent = newPopUpEvent()
+
 func (r *VkRepo) SendMessage(message *entities.MessageResponse) error {
 
 	var method string = r.methodNames.sendMessage
 
-	req, err := http.NewRequest("GET", r.url+method, nil)
-	if err != nil {
-		return fmt.Errorf(constants.RequestCreationError, err)
-	}
-
-	keyboard := newKayboard()
+	// Prepare values
 	keyboardJson, err := json.Marshal(keyboard)
 	if err != nil {
 		return fmt.Errorf(constants.QueryCreationError, err)
@@ -98,8 +105,55 @@ func (r *VkRepo) SendMessage(message *entities.MessageResponse) error {
 
 	values.Set("keyboard", string(keyboardJson))
 
+	// Prepare request
+	req, err := http.NewRequest("GET", r.url+method, nil)
+	if err != nil {
+		return fmt.Errorf(constants.RequestCreationError, err)
+	}
+
 	req.URL.RawQuery = values.Encode()
 
+	// Execute request
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return fmt.Errorf(constants.RequestFailed, err)
+	}
+
+	log.Println("Resp:")
+	log.Println(resp.Status)
+
+	return nil
+}
+
+func (r *VkRepo) SendEvent(eventMessage *entities.EventResponse) error {
+
+	var method string = r.methodNames.sendMessageEventAnswer
+
+	// Prepare values
+	eventDataJson, err := json.Marshal(popUpEvent)
+	if err != nil {
+		return fmt.Errorf(constants.QueryCreationError, err)
+	}
+
+	eventMessage.AccessToken = r.accessToken
+	eventMessage.Version = r.version
+
+	values, err := qs.Values(eventMessage)
+	if err != nil {
+		return fmt.Errorf(constants.QueryCreationError, err)
+	}
+
+	values.Set("event_data", string(eventDataJson))
+
+	// Prepare request
+	req, err := http.NewRequest("GET", r.url+method, nil)
+	if err != nil {
+		return fmt.Errorf(constants.RequestCreationError, err)
+	}
+
+	req.URL.RawQuery = values.Encode()
+
+	// Execute request
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return fmt.Errorf(constants.RequestFailed, err)

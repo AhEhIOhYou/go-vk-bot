@@ -15,11 +15,10 @@ type MessageNew struct {
 }
 
 type MessageEvent struct {
-	UserID                int    `json:"user_id"`
-	PeerID                int    `json:"peer_id"`
-	EventID               string `json:"event_id"`
-	Payload               string `json:"payload"`
-	ConversationMessageId int    `json:"conversation_message_id"`
+	UserID  int    `json:"user_id"`
+	PeerID  int    `json:"peer_id"`
+	EventID string `json:"event_id"`
+	Payload string `json:"payload"`
 }
 
 type MessageRequest struct {
@@ -48,6 +47,21 @@ type MessageResponse struct {
 	Version     string `json:"v" url:"v"`
 	RandomID    int    `json:"random_id" url:"random_id"`
 	Keyboard    string `json:"keyboard" url:"keyboard"`
+}
+
+type EventResponse struct {
+	EventID     string `json:"event_id" url:"event_id"`
+	UserID      int    `json:"user_id" url:"user_id"`
+	AccessToken string `json:"access_token" url:"access_token"`
+	Version     string `json:"v" url:"v"`
+	PeerID      int    `json:"peer_id" url:"peer_id"`
+	EventData   string `json:"event_data" url:"event_data"`
+}
+
+type EventData struct {
+	Type string `json:"type"`
+	Text string `json:"text,omitempty"`
+	Link string `json:"link,omitempty"`
 }
 
 type Keyboard struct {
