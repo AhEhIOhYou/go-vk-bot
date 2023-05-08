@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/constants"
@@ -30,7 +29,7 @@ func NewNasaMethodNames(apod string) *NasaMethodNames {
 
 func (r *NasaRepo) APOD() (*entities.APOD, error) {
 
-	// var method string = r.methodNames.apod
+	var method string = r.methodNames.apod
 
 	// Prepare values
 	apodRequest := &entities.APODRequset{
@@ -44,7 +43,7 @@ func (r *NasaRepo) APOD() (*entities.APOD, error) {
 	}
 
 	// Prepare request
-	req, err := http.NewRequest("GET", "https://api.nasa.gov/planetary/apod", nil)
+	req, err := http.NewRequest("GET", r.url+method, nil)
 	if err != nil {
 		return nil, fmt.Errorf(constants.RequestCreationError, err)
 	}
@@ -70,12 +69,6 @@ func (r *NasaRepo) APOD() (*entities.APOD, error) {
 	if err != nil {
 		return nil, fmt.Errorf(constants.DecodingJSONError, err)
 	}
-
-	log.Println("NASA Status:")
-	log.Println(resp.Status)
-	log.Println("NASA Result:")
-	log.Println(apod[0].HDUrl)
-	log.Println(apod[0].Url)
 
 	return &apod[0], nil
 }

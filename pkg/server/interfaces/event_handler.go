@@ -57,12 +57,15 @@ func (e *EventService) NewMessage(c *gin.Context) {
 	switch messageNew.Message.Text {
 	case "Test #1":
 		messageResponse.Message = "do - 1"
-		_, err := e.NasaApp.APOD()
+		apod, err := e.NasaApp.APOD()
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, fmt.Sprintf(constants.RequestFailed, err))
 			log.Println(err)
 			return
 		}
+		messageResponse.Message = apod.Title
+		messageResponse.Message += "\n" + apod.Explanation
+		messageResponse.Message += apod.HDUrl
 	case "Test #2":
 		messageResponse.Message = "do - 2"
 	case "Test #3":
