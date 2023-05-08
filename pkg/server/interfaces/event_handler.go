@@ -42,16 +42,18 @@ func (e *EventService) NewMessage(c *gin.Context) {
 
 	// Object can be different types, so i use interface
 
+	objectRaw := data.Object.(map[string]interface{})
 	// Convert the map to JSON
-	jsonData, _ := json.Marshal(data.Object)
+	jsonData, _ := json.Marshal(objectRaw)
 
 	// Convert the JSON to a struct
 	var message entities.MessageNew
 	json.Unmarshal(jsonData, &message)
 
+	fmt.Println("Message:")
 	fmt.Println(message)
 
-	// objectRaw := data.Object.(map[string]interface{})
+	
 
 	// TODO unpacking
 
@@ -63,7 +65,7 @@ func (e *EventService) NewMessage(c *gin.Context) {
 	// fmt.Println(message)
 
 	e.VkApp.SendMessage(&entities.MessageResponse{
-		Message: "test-response-4",
+		Message: "test-response-5",
 		UserID:  320353081,
 	})
 

@@ -58,16 +58,10 @@ func (r *VkRepo) SendMessage(message *entities.MessageResponse) error {
 
 	req.URL.RawQuery = vals.Encode()
 
-	log.Println("Query: ")
-	log.Println(req.URL.RawQuery)
-
-	resp, err := http.DefaultClient.Do(req)
+	_, err = http.DefaultClient.Do(req)
 	if err != nil {
 		return fmt.Errorf(constants.RequestFailed, err)
 	}
-
-	log.Println("Response: ")
-	log.Println(resp)
 
 	return nil
 }
