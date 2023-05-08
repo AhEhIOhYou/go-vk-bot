@@ -42,31 +42,16 @@ func (e *EventService) NewMessage(c *gin.Context) {
 
 	// Object can be different types, so i use interface
 
-	objectRaw := data.Object.(map[string]interface{})
-	// Convert the map to JSON
-	jsonData, _ := json.Marshal(objectRaw)
+	var messageNew entities.MessageNew
+	jsonData, _ := json.Marshal(data.Object)
+	json.Unmarshal(jsonData, &messageNew)
 
-	// Convert the JSON to a struct
-	var message entities.MessageNew
-	json.Unmarshal(jsonData, &message)
-
-	fmt.Println("Message:")
-	fmt.Println(message)
-
-	
-
-	// TODO unpacking
-
-	// if err := utils.ConvertMapToStruct(objectRaw, &message); err != nil {
-	// 	c.JSON(http.StatusInternalServerError, fmt.Sprintf(constants.RequestFailed, err))
-	// 	log.Println(err)
-	// }
-
-	// fmt.Println(message)
+	fmt.Println("Message text:")
+	fmt.Println(messageNew.Message.Text)
 
 	e.VkApp.SendMessage(&entities.MessageResponse{
 		Message: "test-response-5",
-		UserID:  320353081,
+		UserID:  messageNew.Message.PeerID,
 	})
 
 	c.Data(http.StatusOK, "charset=utf8", []byte("ok"))

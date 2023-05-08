@@ -1,12 +1,12 @@
 package entities
 
 type Event struct {
-	GroupID int         `json:"group_id"`
-	Type    string      `json:"type"`
-	EventID string      `json:"event_id"`
-	Version string      `json:"v"`
-	Object  interface{} `json:"object"`
-	Secret  string      `json:"secret"`
+	GroupID int                    `json:"group_id"`
+	Type    string                 `json:"type"`
+	EventID string                 `json:"event_id"`
+	Version string                 `json:"v"`
+	Object  map[string]interface{} `json:"object"`
+	Secret  string                 `json:"secret"`
 }
 
 type MessageNew struct {
