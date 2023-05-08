@@ -59,7 +59,7 @@ func (e *EventService) NewMessage(c *gin.Context) {
 	// 	UserID:  320353081,
 	// })
 
-	c.Status(http.StatusOK)
+	c.Data(http.StatusOK, "charset=utf8", []byte("ok"))
 }
 
 func (e *EventService) Confirm(c *gin.Context) {
