@@ -1,6 +1,7 @@
 package interfaces
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -41,11 +42,18 @@ func (e *EventService) NewMessage(c *gin.Context) {
 
 	// Object can be different types, so i use interface
 
+	// Convert the map to JSON
+	jsonData, _ := json.Marshal(data.Object)
+
+	// Convert the JSON to a struct
+	var message entities.MessageNew
+	json.Unmarshal(jsonData, &message)
+
+	fmt.Println(message)
+
 	// objectRaw := data.Object.(map[string]interface{})
 
 	// TODO unpacking
-
-	// var message entities.MessageNew
 
 	// if err := utils.ConvertMapToStruct(objectRaw, &message); err != nil {
 	// 	c.JSON(http.StatusInternalServerError, fmt.Sprintf(constants.RequestFailed, err))
