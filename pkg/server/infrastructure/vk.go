@@ -9,7 +9,7 @@ import (
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/constants"
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/entities"
 
-	querystring "github.com/google/go-querystring/query"
+	qs "github.com/hetiansu5/urlquery"
 )
 
 type VkMethodNames struct {
@@ -75,12 +75,12 @@ func (r *VkRepo) SendMessage(message *entities.MessageResponse) error {
 	message.RandomID = rand.Intn(92233720368)
 	message.Keyboard = newKayboard()
 
-	vals, err := querystring.Values(message)
+	bytes, err := qs.Marshal(message)
 	if err != nil {
 		return fmt.Errorf(constants.QueryCreationError, err)
 	}
 
-	req.URL.RawQuery = vals.Encode()
+	req.URL.RawQuery = string(bytes)
 
 	log.Println("Query:")
 	log.Println(req.URL.RawQuery)
