@@ -42,27 +42,27 @@ type ClientInfo struct {
 }
 
 type MessageResponse struct {
-	Message     string   `json:"message" qs:"message"`
-	UserID      int      `json:"user_id" qs:"user_id"`
-	AccessToken string   `json:"access_token" qs:"access_token"`
-	Version     string   `json:"v" qs:"v"`
-	RandomID    int      `json:"random_id" qs:"random_id"`
-	Keyboard    Keyboard `json:"keyboard" qs:"keyboard"`
+	Message     string `json:"message" url:"message"`
+	UserID      int    `json:"user_id" url:"user_id"`
+	AccessToken string `json:"access_token" url:"access_token"`
+	Version     string `json:"v" url:"v"`
+	RandomID    int    `json:"random_id" url:"random_id"`
+	Keyboard    string `json:"keyboard" url:"keyboard"`
 }
 
 type Keyboard struct {
-	OneTime bool     `json:"one_time" qs:"one_time"`
-	Buttons [][]Button `json:"buttons" qs:"buttons"`
-	Inline  bool     `json:"inline" qs:"inline"`
+	OneTime bool       `json:"one_time" url:"one_time"`
+	Buttons [][]Button `json:"buttons" url:"buttons"`
+	Inline  bool       `json:"inline" url:"inline"`
 }
 
 type Button struct {
-	Color  string       `json:"color" qs:"color"`
-	Action ButtonAction `json:"action" qs:"action"`
+	Color  string       `json:"color" url:"color"`
+	Action ButtonAction `json:"action" url:"action"`
 }
 
 type ButtonAction struct {
-	Type    string `json:"type" qs:"type"`
-	Label   string `json:"label" qs:"label"`
-	Payload string `json:"payload" qs:"payload"`
+	Type    string `json:"type" url:"type"`
+	Label   string `json:"label" url:"label"`
+	Payload string `json:"payload" url:"payload"`
 }

@@ -8,8 +8,9 @@ import (
 
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/constants"
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/entities"
+	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/infrastructure/utils"
 
-	qs "github.com/sonh/qs"
+	qs "github.com/google/go-querystring/query"
 )
 
 type VkMethodNames struct {
@@ -39,28 +40,27 @@ func NewVkRepo(url, access_token, version string, methodNames *VkMethodNames) *V
 }
 
 func newKayboard() entities.Keyboard {
-	arr := [][]entities.Button{
-		{
-			{
-				Color: "primary",
-				Action: entities.ButtonAction{
-					Type:  "text",
-					Label: "Test #1",
-				},
-			},
-			{
-				Color: "primary",
-				Action: entities.ButtonAction{
-					Type:  "text",
-					Label: "Test #2",
-				},
-			},
-		},
-	}
 	return entities.Keyboard{
 		OneTime: false,
 		Inline:  false,
-		Buttons: arr,
+		Buttons: [][]entities.Button{
+			{
+				{
+					Color: "primary",
+					Action: entities.ButtonAction{
+						Type:  "text",
+						Label: "Test #1",
+					},
+				},
+				{
+					Color: "primary",
+					Action: entities.ButtonAction{
+						Type:  "text",
+						Label: "Test #2",
+					},
+				},
+			},
+		},
 	}
 }
 
@@ -68,24 +68,28 @@ func (r *VkRepo) SendMessage(message *entities.MessageResponse) error {
 
 	var method string = r.methodNames.sendMessage
 
-	_, err := http.NewRequest("GET", r.url+method, nil)
+	req, err := http.NewRequest("GET", r.url+method, nil)
 	if err != nil {
 		return fmt.Errorf(constants.RequestCreationError, err)
+	}
+
+	keyboard := newKayboard()
+	keyboardQuery, err := utils.KeyboardToQuery(&keyboard)
+	if err != nil {
+		return fmt.Errorf(constants.QueryCreationError, err)
 	}
 
 	message.AccessToken = r.accessToken
 	message.Version = r.version
 	message.RandomID = rand.Intn(92233720368)
-	message.Keyboard = newKayboard()
+	message.Keyboard = keyboardQuery
 
-	encoder := qs.NewEncoder()
-	test := message.Keyboard
-	values, err := encoder.Values(test)
+	values, err := qs.Values(message)
 	if err != nil {
 		return fmt.Errorf(constants.QueryCreationError, err)
 	}
 
-	// req.URL.RawQuery = values.Encode()
+	req.URL.RawQuery = values.Encode()
 
 	log.Println("Query:")
 	log.Println(values.Encode())
