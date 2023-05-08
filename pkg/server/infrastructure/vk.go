@@ -37,6 +37,47 @@ func NewVkRepo(url, access_token, version string, methodNames *VkMethodNames) *V
 	}
 }
 
+func newKayboard() *entities.Keyboard {
+	return &entities.Keyboard{
+		OneTime: false,
+		Inline:  false,
+		Buttons: []entities.Button{
+			{
+				Color: "primary",
+				Action: entities.ButtonAction{
+					Type:    "text",
+					Label:   "Test #1",
+					Payload: "",
+				},
+			},
+			{
+				Color: "primary",
+				Action: entities.ButtonAction{
+					Type:    "text",
+					Label:   "Test #2",
+					Payload: "",
+				},
+			},
+			{
+				Color: "primary",
+				Action: entities.ButtonAction{
+					Type:    "text",
+					Label:   "Test #3",
+					Payload: "",
+				},
+			},
+			{
+				Color: "primary",
+				Action: entities.ButtonAction{
+					Type:    "text",
+					Label:   "Test #4",
+					Payload: "",
+				},
+			},
+		},
+	}
+}
+
 func (r *VkRepo) SendMessage(message *entities.MessageResponse) error {
 
 	var method string = r.methodNames.sendMessage
@@ -49,6 +90,7 @@ func (r *VkRepo) SendMessage(message *entities.MessageResponse) error {
 	message.AccessToken = r.accessToken
 	message.Version = r.version
 	message.RandomID = rand.Intn(92233720368)
+	message.Keyboard = *newKayboard()
 
 	vals, err := querystring.Values(message)
 	if err != nil {

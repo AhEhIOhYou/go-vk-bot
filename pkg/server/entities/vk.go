@@ -42,9 +42,28 @@ type ClientInfo struct {
 }
 
 type MessageResponse struct {
-	Message     string `json:"message" url:"message"`
-	UserID      int    `json:"user_id" url:"user_id"`
-	AccessToken string `json:"access_token" url:"access_token"`
-	Version     string `json:"v" url:"v"`
-	RandomID    int    `json:"random_id" url:"random_id"`
+	Message     string   `json:"message" url:"message"`
+	UserID      int      `json:"user_id" url:"user_id"`
+	AccessToken string   `json:"access_token" url:"access_token"`
+	Version     string   `json:"v" url:"v"`
+	RandomID    int      `json:"random_id" url:"random_id"`
+	Keyboard    Keyboard `json:"keyboard" url:"keyboard"`
+}
+
+type Keyboard struct {
+	OneTime bool     `json:"one_time" url:"one_time"`
+	Buttons []Button `json:"buttons" url:"buttons"`
+	Inline  bool     `json:"inline" url:"inline"`
+}
+
+type Button struct {
+	Color  string       `json:"color" url:"color"`
+	Action ButtonAction `json:"action" url:"action"`
+}
+
+type ButtonAction struct {
+	Type    string `json:"type" url:"type"`
+	Label   string `json:"label" url:"label"`
+	Payload string `json:"payload" url:"payload"`
+	Link    string `json:"link" url:"link"`
 }
