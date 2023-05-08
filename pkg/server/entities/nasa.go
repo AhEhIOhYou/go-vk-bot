@@ -13,4 +13,5 @@ type APOD struct {
 	MediaType      string `json:"media_type"`
 	ServiceVersion string `json:"service_version"`
 	Title          string `json:"title"`
+	Copyright      string `json:"copyright"`
 }

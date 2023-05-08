@@ -58,19 +58,19 @@ func (r *NasaRepo) APOD() (*entities.APOD, error) {
 		return nil, fmt.Errorf(constants.RequestFailed, err)
 	}
 
-	log.Println(resp.Status)
-
 	defer resp.Body.Close()
 
 	decoder := json.NewDecoder(resp.Body)
-	var apod *entities.APOD
+	var apod entities.APOD
 	err = decoder.Decode(&apod)
 	if err != nil {
 		return nil, fmt.Errorf(constants.DecodingJSONError, err)
 	}
 
+	log.Println("NASA Status:")
+	log.Println(resp.Status)
 	log.Println("NASA Result:")
 	log.Println(apod)
 
-	return apod, nil
+	return &apod, nil
 }
