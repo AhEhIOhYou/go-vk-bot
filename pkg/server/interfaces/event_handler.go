@@ -44,7 +44,9 @@ func (e *EventService) NewMessage(c *gin.Context) {
 
 	objectRaw := data.Object.(map[string]interface{})
 
-	var message entities.MessageNew
+	fmt.Println(objectRaw)
+
+	var message *entities.MessageNew
 
 	if err := utils.ConvertMapToStruct(objectRaw, &message); err != nil {
 		c.JSON(http.StatusInternalServerError, fmt.Sprintf(constants.RequestFailed, err))
