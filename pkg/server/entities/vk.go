@@ -65,5 +65,4 @@ type ButtonAction struct {
 	Type    string `json:"type" url:"type"`
 	Label   string `json:"label" url:"label"`
 	Payload string `json:"payload" url:"payload"`
-	Link    string `json:"link" url:"link"`
 }

@@ -38,8 +38,8 @@ func NewVkRepo(url, access_token, version string, methodNames *VkMethodNames) *V
 	}
 }
 
-func newKayboard() *entities.Keyboard {
-	return &entities.Keyboard{
+func newKayboard() entities.Keyboard {
+	return entities.Keyboard{
 		OneTime: false,
 		Inline:  false,
 		Buttons: []entities.Button{
@@ -48,30 +48,6 @@ func newKayboard() *entities.Keyboard {
 				Action: entities.ButtonAction{
 					Type:    "text",
 					Label:   "Test #1",
-					Payload: "",
-				},
-			},
-			{
-				Color: "primary",
-				Action: entities.ButtonAction{
-					Type:    "text",
-					Label:   "Test #2",
-					Payload: "",
-				},
-			},
-			{
-				Color: "primary",
-				Action: entities.ButtonAction{
-					Type:    "text",
-					Label:   "Test #3",
-					Payload: "",
-				},
-			},
-			{
-				Color: "primary",
-				Action: entities.ButtonAction{
-					Type:    "text",
-					Label:   "Test #4",
 					Payload: "",
 				},
 			},
@@ -91,7 +67,7 @@ func (r *VkRepo) SendMessage(message *entities.MessageResponse) error {
 	message.AccessToken = r.accessToken
 	message.Version = r.version
 	message.RandomID = rand.Intn(92233720368)
-	message.Keyboard = *newKayboard()
+	message.Keyboard = newKayboard()
 
 	vals, err := querystring.Values(message)
 	if err != nil {
@@ -103,10 +79,13 @@ func (r *VkRepo) SendMessage(message *entities.MessageResponse) error {
 	log.Println("Query:")
 	log.Println(req.URL.RawQuery)
 
-	_, err = http.DefaultClient.Do(req)
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return fmt.Errorf(constants.RequestFailed, err)
 	}
+
+	log.Println("Resp:")
+	log.Println(resp.Body)
 
 	return nil
 }

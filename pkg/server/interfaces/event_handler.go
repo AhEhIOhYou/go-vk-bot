@@ -50,7 +50,7 @@ func (e *EventService) NewMessage(c *gin.Context) {
 	fmt.Println(messageNew.Message.Text)
 
 	e.VkApp.SendMessage(&entities.MessageResponse{
-		Message: "test-response-6",
+		Message: "test-response-7",
 		UserID:  messageNew.Message.PeerID,
 	})
 
