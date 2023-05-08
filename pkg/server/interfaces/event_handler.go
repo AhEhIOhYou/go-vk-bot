@@ -8,7 +8,6 @@ import (
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/constants"
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/entities"
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/infrastructure"
-	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/infrastructure/utils"
 	"github.com/gin-gonic/gin"
 )
 
