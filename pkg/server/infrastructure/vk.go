@@ -39,25 +39,28 @@ func NewVkRepo(url, access_token, version string, methodNames *VkMethodNames) *V
 }
 
 func newKayboard() entities.Keyboard {
-	return entities.Keyboard{
-		OneTime: false,
-		Inline:  false,
-		Buttons: []entities.Button{
+	arr := [][]entities.Button {
+		{
 			{
 				Color: "primary",
 				Action: entities.ButtonAction{
-					Type:    "text",
-					Label:   "Test #1",
+					Type:  "text",
+					Label: "Test #1",
 				},
 			},
 			{
 				Color: "primary",
 				Action: entities.ButtonAction{
-					Type:    "text",
-					Label:   "Test #2",
+					Type:  "text",
+					Label: "Test #2",
 				},
 			},
 		},
+	}
+	return entities.Keyboard{
+		OneTime: false,
+		Inline:  false,
+		Buttons: arr,
 	}
 }
 

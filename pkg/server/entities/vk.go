@@ -52,7 +52,7 @@ type MessageResponse struct {
 
 type Keyboard struct {
 	OneTime bool     `json:"one_time" query:"one_time"`
-	Buttons []Button `json:"buttons" query:",buttons"`
+	Buttons [][]Button `json:"buttons" query:",buttons"`
 	Inline  bool     `json:"inline" query:"inline"`
 }
 
