@@ -40,42 +40,41 @@ func (e *EventService) NewMessage(c *gin.Context) {
 
 	// Object can be different types, so i use interface
 
-	switch data.Type {
-	case "message_new":
-		var messageNew entities.MessageNew
-		jsonData, _ := json.Marshal(data.Object)
-		json.Unmarshal(jsonData, &messageNew)
-		fmt.Println("Message text:")
-		fmt.Println(messageNew.Message.Text)
+	// There should be a switch case here, but so far we are working only with message_new, so there is no need
 
-		err := e.VkApp.SendMessage(&entities.MessageResponse{
-			Message: "test-response-8",
-			UserID:  messageNew.Message.PeerID,
-		})
+	var messageNew entities.MessageNew
+	jsonData, _ := json.Marshal(data.Object)
+	json.Unmarshal(jsonData, &messageNew)
 
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, fmt.Sprintf(constants.RequestFailed, err))
-			log.Println(err)
-		}
-	case "message_event":
-		var messageEvent entities.MessageEvent
-		jsonData, _ := json.Marshal(data.Object)
-		json.Unmarshal(jsonData, &messageEvent)
-		fmt.Println("Event id:")
-		fmt.Println(messageEvent.EventID)
-		fmt.Println("Event payload:")
-		fmt.Println(messageEvent.Payload)
+	fmt.Println("Message text:")
+	fmt.Println(messageNew.Message.Text)
 
-		err := e.VkApp.SendEvent(&entities.EventResponse{
-			EventID: messageEvent.EventID,
-			UserID:  messageEvent.UserID,
-			PeerID:  messageEvent.PeerID,
-		})
+	var messageResponse = &entities.MessageResponse{
+		UserID: messageNew.Message.PeerID,
+	}
 
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, fmt.Sprintf(constants.RequestFailed, err))
-			log.Println(err)
-		}
+	switch messageNew.Message.Text {
+	case "Test #1":
+		messageResponse.Message = "do - 1"
+	case "Test #2":
+		messageResponse.Message = "do - 2"
+	case "Test #3":
+		messageResponse.Message = "do - 3"
+	case "Test #4":
+		messageResponse.Message = "do - 4"
+	case "Test #2.1":
+		messageResponse.Message = "do - 5"
+	case "Test #2.2":
+		messageResponse.Message = "do - 6"
+	default:
+		messageResponse.Message = "I'm sorry, I don't understand you"
+	}
+
+	err := e.VkApp.SendMessage(messageResponse)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf(constants.RequestFailed, err))
+		log.Println(err)
 	}
 
 	c.Data(http.StatusOK, "charset=utf8", []byte("ok"))
