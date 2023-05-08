@@ -3,6 +3,7 @@ package infrastructure
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 
@@ -90,10 +91,19 @@ func (r *VkRepo) SendMessage(message *entities.MessageResponse) error {
 
 	values.Set("keyboard", string(keyboardJson))
 
-	_, err = http.DefaultClient.Do(req)
+	req.URL.RawQuery = values.Encode()
+
+	log.Println("Req:")
+	log.Println(req.URL.RawQuery)
+
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return fmt.Errorf(constants.RequestFailed, err)
 	}
+
+	log.Println("Resp:")
+	log.Println(resp.Status)
+	log.Println(resp.Body)
 
 	return nil
 }
