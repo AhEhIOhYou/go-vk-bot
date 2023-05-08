@@ -57,12 +57,13 @@ type Keyboard struct {
 }
 
 type Button struct {
-	Color  string       `json:"color,omitempty"`
+	Color  string       `json:"color"`
 	Action ButtonAction `json:"action"`
 }
 
 type ButtonAction struct {
 	Type    string `json:"type"`
-	Label   string `json:"label"`
+	Label   string `json:"label,omitempty"`
+	Link    string `json:"link,omitempty"`
 	Payload string `json:"payload,omitempty"`
 }

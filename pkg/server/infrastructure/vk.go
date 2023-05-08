@@ -59,6 +59,14 @@ func newKayboard() entities.Keyboard {
 						Label: "Test #2",
 					},
 				},
+				{
+					Color: "negative",
+					Action: entities.ButtonAction{
+						Type:  "callback",
+						Label: "Test #3",
+						Payload: "",
+					},
+				},
 			},
 		},
 	}
@@ -82,7 +90,6 @@ func (r *VkRepo) SendMessage(message *entities.MessageResponse) error {
 	message.AccessToken = r.accessToken
 	message.Version = r.version
 	message.RandomID = rand.Intn(92233720368)
-	message.Message = "ahahahhahahah"
 
 	values, err := qs.Values(message)
 	if err != nil {
@@ -93,9 +100,6 @@ func (r *VkRepo) SendMessage(message *entities.MessageResponse) error {
 
 	req.URL.RawQuery = values.Encode()
 
-	log.Println("Req:")
-	log.Println(req.URL.RawQuery)
-
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return fmt.Errorf(constants.RequestFailed, err)
@@ -103,7 +107,6 @@ func (r *VkRepo) SendMessage(message *entities.MessageResponse) error {
 
 	log.Println("Resp:")
 	log.Println(resp.Status)
-	log.Println(resp.Body)
 
 	return nil
 }
