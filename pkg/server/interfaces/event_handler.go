@@ -42,18 +42,18 @@ func (e *EventService) NewMessage(c *gin.Context) {
 
 	// Object can be different types, so i use interface
 
-	objectRaw := data.Object.(map[string]interface{})
+	// objectRaw := data.Object.(map[string]interface{})
 
-	fmt.Println(objectRaw)
+	// TODO unpacking
 
-	var message entities.MessageNew
+	// var message entities.MessageNew
 
-	if err := utils.ConvertMapToStruct(objectRaw, &message); err != nil {
-		c.JSON(http.StatusInternalServerError, fmt.Sprintf(constants.RequestFailed, err))
-		log.Println(err)
-	}
+	// if err := utils.ConvertMapToStruct(objectRaw, &message); err != nil {
+	// 	c.JSON(http.StatusInternalServerError, fmt.Sprintf(constants.RequestFailed, err))
+	// 	log.Println(err)
+	// }
 
-	fmt.Println(message)
+	// fmt.Println(message)
 
 	e.VkApp.SendMessage(&entities.MessageResponse{
 		Text:   "test-response-1",
