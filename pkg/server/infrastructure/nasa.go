@@ -51,6 +51,8 @@ func (r *NasaRepo) APOD() (*entities.APOD, error) {
 
 	req.URL.RawQuery = values.Encode()
 
+	log.Println(req.URL.RawQuery)
+
 	// Execute request
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
