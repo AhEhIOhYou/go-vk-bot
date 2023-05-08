@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 
@@ -98,6 +99,9 @@ func (r *VkRepo) SendMessage(message *entities.MessageResponse) error {
 	}
 
 	req.URL.RawQuery = vals.Encode()
+
+	log.Println("Query:")
+	log.Println(req.URL.RawQuery)
 
 	_, err = http.DefaultClient.Do(req)
 	if err != nil {
