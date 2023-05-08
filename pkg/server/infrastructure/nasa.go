@@ -43,19 +43,23 @@ func (r *NasaRepo) APOD() (*entities.APOD, error) {
 		return nil, fmt.Errorf(constants.QueryCreationError, err)
 	}
 
-	// Execute request
-	path := r.url+method + "?" + values.Encode()
-	log.Println(path)
-	resp, err := http.Get(path)
+	// Prepare request
+	req, err := http.NewRequest("GET", r.url+method, nil)
 	if err != nil {
 		return nil, fmt.Errorf(constants.RequestCreationError, err)
 	}
 
-	log.Println(resp.Request.URL)
+	req.URL.RawQuery = values.Encode()
+
+	// Execute request
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf(constants.RequestFailed, err)
+	}
 
 	defer resp.Body.Close()
 
-	var apod entities.APOD
+	var apod []entities.APOD
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -70,7 +74,8 @@ func (r *NasaRepo) APOD() (*entities.APOD, error) {
 	log.Println("NASA Status:")
 	log.Println(resp.Status)
 	log.Println("NASA Result:")
-	log.Println(apod)
+	log.Println(apod[0].HDUrl)
+	log.Println(apod[0].Url)
 
-	return &apod, nil
+	return &apod[0], nil
 }
