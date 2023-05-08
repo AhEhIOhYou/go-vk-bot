@@ -42,7 +42,7 @@ type ClientInfo struct {
 }
 
 type MessageResponse struct {
-	Text        string `json:"text" url:"text"`
+	Message     string `json:"message" url:"message"`
 	UserID      int    `json:"user_id" url:"user_id"`
 	AccessToken string `json:"access_token" url:"access_token"`
 	Version     string `json:"v" url:"v"`

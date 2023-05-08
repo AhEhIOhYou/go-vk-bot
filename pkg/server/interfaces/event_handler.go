@@ -55,8 +55,8 @@ func (e *EventService) NewMessage(c *gin.Context) {
 	// fmt.Println(message)
 
 	e.VkApp.SendMessage(&entities.MessageResponse{
-		Text:   "test-response-1",
-		UserID: 320353081,
+		Message: "test-response-2",
+		UserID:  320353081,
 	})
 
 	c.JSON(http.StatusOK, data)
