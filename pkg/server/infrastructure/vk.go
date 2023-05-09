@@ -138,6 +138,8 @@ func (r *VkRepo) SendMessage(message *entities.MessageResponse) error {
 	return nil
 }
 
+// Unused
+// I tried uploading photos, but realized that the VK itself downloads photos by the link
 func (r *VkRepo) GetMessageUploadServer(uploadReq *entities.MessageUploadServerRequest) (*entities.VkResponse, error) {
 
 	var method string = "photos.getMessagesUploadServer"
@@ -167,7 +169,7 @@ func (r *VkRepo) GetMessageUploadServer(uploadReq *entities.MessageUploadServerR
 
 	defer resp.Body.Close()
 
-	var uploadResp entities.VkResponse
+	var uploadResp *entities.VkResponse
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -179,5 +181,5 @@ func (r *VkRepo) GetMessageUploadServer(uploadReq *entities.MessageUploadServerR
 		return nil, fmt.Errorf(constants.DecodingJSONError, err)
 	}
 
-	return &uploadResp, nil
+	return uploadResp, nil
 }

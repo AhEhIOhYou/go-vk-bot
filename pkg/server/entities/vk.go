@@ -67,7 +67,7 @@ type MessageUploadServerRequest struct {
 }
 
 type VkResponse struct {
-	Response MessageUploadServerRequest `json:"response"`
+	Response MessageUploadServerResponse `json:"response"`
 }
 
 type MessageUploadServerResponse struct {
