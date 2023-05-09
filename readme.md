@@ -1,14 +1,4 @@
----
-title: VK bot
-description: VK bot using NASA API for space exploration
-tags:
-  - vk api
-  - vk bot
-  - nasa api
-  - golang
----
-
-# Space Vk bot
+# Space VK bot
 
 ## 📄 Description
 
@@ -25,4 +15,4 @@ VK bot using NASA API for space exploration
 
 Possible to add an application interface layer
 
-Easy to extend the service by adding database connections in the Repo and methods in the infrastructure
+Easy to extend the service by adding database connections in the Repo and methods in the infrastructure (telegram api for example)
