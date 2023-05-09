@@ -2,7 +2,9 @@
 
 ## 📄 Description
 
-VK bot using NASA API for space exploration
+VKbot using the NASA API to get knowledge about space
+
+Link: [Lone Trail](https://vk.com/lonetrail)
 
 ## 🔧 Stack
 
