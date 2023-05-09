@@ -83,6 +83,8 @@ func (r *NasaRepo) GetMarsPhoto(roverPhotoReq *entities.MarsRoverPhotosRequest) 
 
 	roverPhotoReq.ApiKey = r.accessToken
 
+	log.Println(roverPhotoReq)
+
 	values, err := qs.Values(roverPhotoReq)
 	if err != nil {
 		return nil, fmt.Errorf(constants.QueryCreationError, err)
@@ -95,6 +97,8 @@ func (r *NasaRepo) GetMarsPhoto(roverPhotoReq *entities.MarsRoverPhotosRequest) 
 	}
 
 	req.URL.RawQuery = values.Encode()
+
+	log.Println(req.URL.RawQuery)
 
 	// Execute request
 	resp, err := http.DefaultClient.Do(req)
