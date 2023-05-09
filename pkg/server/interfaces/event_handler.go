@@ -27,7 +27,7 @@ func NewEventService(vkRepo infrastructure.VkRepo, nasaRepo infrastructure.NasaR
 	}
 }
 
-func (e *EventService) NewMessage(c *gin.Context) {
+func (e *EventService) NewVkEvent(c *gin.Context) {
 
 	var data *entities.Event
 

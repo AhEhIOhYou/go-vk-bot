@@ -24,7 +24,7 @@ func Serve() {
 
 	router := gin.Default()
 
-	router.POST("/vk", event.NewMessage)
+	router.POST("/", event.NewVkEvent)
 
 	log.Fatal(router.Run())
 }
