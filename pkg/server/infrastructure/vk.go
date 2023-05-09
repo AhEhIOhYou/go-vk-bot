@@ -48,8 +48,8 @@ func newKayboard() entities.Keyboard {
 				{
 					Color: "primary",
 					Action: entities.ButtonAction{
-						Type:  "APOD",
-						Label: "Test #1",
+						Type:  "text",
+						Label: "APOD",
 					},
 				},
 				{
