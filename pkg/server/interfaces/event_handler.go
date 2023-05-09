@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
 
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/constants"
@@ -68,6 +69,25 @@ func (e *EventService) NewMessage(c *gin.Context) {
 		messageResponse.Message += "\n\n" + "Date: " + apod.Date
 	case "Test #2":
 		messageResponse.Message = "do - 2"
+		photos, err := e.NasaApp.GetMarsPhoto(&entities.MarsRoverPhotosRequest{
+			Camera: constants.RoverCameraFHAZ,
+			Sol:    980,
+		})
+		if err != nil {
+			messageResponse.Message = constants.ServerErrorOccurred
+			log.Printf(constants.RequestFailed, err)
+			break
+		}
+		if len(photos.Photos) == 0 {
+			messageResponse.Message = "Photo not found :("
+		} else {
+			index := rand.Intn(len(photos.Photos)) + 1
+			messageResponse.Message = "Rover: " + photos.Photos[index].Rover.Name
+			messageResponse.Message += "\n\nCamera: " + photos.Photos[index].Camera.FullName
+			messageResponse.Message += "\n\n" + "IMG: " + photos.Photos[index].ImgSrc
+			messageResponse.Message += "\n\n" + "Sol: " + fmt.Sprint(photos.Photos[index].Sol)
+			messageResponse.Message += "\n\n" + "Date: " + photos.Photos[index].EarthDate
+		}
 	case "Test #3":
 		messageResponse.Message = "do - 3"
 	case "Test #4":

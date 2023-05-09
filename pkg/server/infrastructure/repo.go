@@ -18,10 +18,12 @@ func NewRepo() (*Repos, error) {
 			),
 		},
 		Nasa: NasaRepo{
-			url: os.Getenv("NASA_API_URL"),
+			url:         os.Getenv("NASA_API_URL"),
 			accessToken: os.Getenv("NASA_API_KEY"),
+			marsUrl:     os.Getenv("NASA_MARS_WEATHER_URL"),
 			methodNames: NewNasaMethodNames(
 				os.Getenv("NASA_API_METHOD_APOD"),
+				os.Getenv("NASA_API_METHOD_MARS_PHOTO"),
 			),
 		},
 	}, nil

@@ -31,15 +31,6 @@ func NewVkMethodNames(sendMessage string) *VkMethodNames {
 	}
 }
 
-func NewVkRepo(url, access_token, version string, methodNames *VkMethodNames) *VkRepo {
-	return &VkRepo{
-		url:         url,
-		accessToken: access_token,
-		version:     version,
-		methodNames: methodNames,
-	}
-}
-
 func newKayboard() entities.Keyboard {
 	return entities.Keyboard{
 		OneTime: false,

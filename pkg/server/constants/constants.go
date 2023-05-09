@@ -16,3 +16,14 @@ const (
 	// Other
 
 )
+
+const (
+	// Front Hazard Avoidance Camera
+	RoverCameraFHAZ = "FHAZ"
+	// Rear Hazard Avoidance Camera
+	RoverCameraRHAZ = "RHAZ"
+	// Mast Camera
+	RoverCameraMAST = "MAST"
+	// Chemistry and Camera Complex
+	RoverCameraCHEMCAM = "CHEMCAM"
+)
