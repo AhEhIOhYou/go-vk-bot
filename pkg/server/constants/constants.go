@@ -13,7 +13,7 @@ const (
 	// Other
 
 	BotDescription = "Greetings!\n\nI am a chatbot.\nMy purpose is to give modest access to NASA's public database. Read the description of the commands and enjoy the articles and pictures.\n\nMy creator is ahehiohyou."
-	BotCommands    = "The following commands will show you photos of Mars from different cameras of the research rovers\n- FHAZ\n- RHAZ\n- MAST\n- CHEMCAM\n\nThis command will show you a random picture and its article from NASA's most popular website, Astronomy Picture of the Day.\n- APOD\n\nWell, test :)\n- Test"
+	BotCommands    = "The following commands will show you photos of Mars from different cameras of the research rovers\n- FHAZ\n- RHAZ\n- MAST\n- CHEMCAM\n\nIf the photo could not be found, try again!\n\nThis command will show you a random picture and its article from NASA's most popular website, Astronomy Picture of the Day.\n- APOD\n\nWell, test :)\n- Test"
 
 	TestSuccess = "Test? Test! test TEST testtttt"
 
