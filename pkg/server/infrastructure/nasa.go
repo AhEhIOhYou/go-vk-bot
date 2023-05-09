@@ -18,7 +18,6 @@ type NasaMethodNames struct {
 
 type NasaRepo struct {
 	url         string
-	marsUrl     string
 	accessToken string
 	methodNames *NasaMethodNames
 }

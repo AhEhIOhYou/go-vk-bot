@@ -6,10 +6,12 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/constants"
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/entities"
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/infrastructure"
+	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/infrastructure/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -40,6 +42,12 @@ func (e *EventService) NewMessage(c *gin.Context) {
 		return
 	}
 
+	if data.Secret != os.Getenv("VK_SECRET_KEY") {
+		c.JSON(http.StatusInternalServerError, constants.SecretWordMissmatch)
+		log.Print(constants.SecretWordMissmatch)
+		return
+	}
+
 	// Object can be different types, so i use interface
 
 	// There should be a switch case here, but so far we are working only with message_new, so there is no need
@@ -48,10 +56,7 @@ func (e *EventService) NewMessage(c *gin.Context) {
 	jsonData, _ := json.Marshal(data.Object)
 	json.Unmarshal(jsonData, &messageNew)
 
-	fmt.Println("Message text:")
-	fmt.Println(messageNew.Message.Text)
-
-	var messageResponse = &entities.MessageResponse{
+	messageResponse := &entities.MessageResponse{
 		UserID: messageNew.Message.PeerID,
 	}
 
@@ -63,10 +68,7 @@ func (e *EventService) NewMessage(c *gin.Context) {
 			log.Printf(constants.RequestFailed, err)
 			break
 		}
-		messageResponse.Message = apod.Title
-		messageResponse.Message += "\n\n" + apod.Explanation
-		messageResponse.Message += "\n\n" + "IMG: " + apod.HDUrl
-		messageResponse.Message += "\n\n" + "Date: " + apod.Date
+		messageResponse.Message = utils.PrepareAPODMessage(apod)
 	case "FHAZ":
 		photos, err := e.NasaApp.GetMarsPhoto(&entities.MarsRoverPhotosRequest{
 			Camera: constants.RoverCameraFHAZ,
@@ -81,11 +83,7 @@ func (e *EventService) NewMessage(c *gin.Context) {
 			messageResponse.Message = "Photo not found :("
 		} else {
 			index := rand.Intn(len(photos.Photos)) + 0
-			messageResponse.Message = "Rover: " + photos.Photos[index].Rover.Name
-			messageResponse.Message += "\n\nCamera: " + photos.Photos[index].Camera.FullName
-			messageResponse.Message += "\n\n" + "IMG: " + photos.Photos[index].ImgSrc
-			messageResponse.Message += "\n\n" + "Sol: " + fmt.Sprint(photos.Photos[index].Sol)
-			messageResponse.Message += "\n\n" + "Date: " + photos.Photos[index].EarthDate
+			messageResponse.Message = utils.PrepareMarsRoverPhotoMessage(&photos.Photos[index])
 		}
 	case "RHAZ":
 		photos, err := e.NasaApp.GetMarsPhoto(&entities.MarsRoverPhotosRequest{
@@ -101,11 +99,7 @@ func (e *EventService) NewMessage(c *gin.Context) {
 			messageResponse.Message = "Photo not found :("
 		} else {
 			index := rand.Intn(len(photos.Photos)) + 0
-			messageResponse.Message = "Rover: " + photos.Photos[index].Rover.Name
-			messageResponse.Message += "\n\nCamera: " + photos.Photos[index].Camera.FullName
-			messageResponse.Message += "\n\n" + "IMG: " + photos.Photos[index].ImgSrc
-			messageResponse.Message += "\n\n" + "Sol: " + fmt.Sprint(photos.Photos[index].Sol)
-			messageResponse.Message += "\n\n" + "Date: " + photos.Photos[index].EarthDate
+			messageResponse.Message = utils.PrepareMarsRoverPhotoMessage(&photos.Photos[index])
 		}
 	case "MAST":
 		photos, err := e.NasaApp.GetMarsPhoto(&entities.MarsRoverPhotosRequest{
@@ -121,16 +115,12 @@ func (e *EventService) NewMessage(c *gin.Context) {
 			messageResponse.Message = "Photo not found :("
 		} else {
 			index := rand.Intn(len(photos.Photos)) + 0
-			messageResponse.Message = "Rover: " + photos.Photos[index].Rover.Name
-			messageResponse.Message += "\n\nCamera: " + photos.Photos[index].Camera.FullName
-			messageResponse.Message += "\n\n" + "IMG: " + photos.Photos[index].ImgSrc
-			messageResponse.Message += "\n\n" + "Sol: " + fmt.Sprint(photos.Photos[index].Sol)
-			messageResponse.Message += "\n\n" + "Date: " + photos.Photos[index].EarthDate
+			messageResponse.Message = utils.PrepareMarsRoverPhotoMessage(&photos.Photos[index])
 		}
 	case "CHEMCAM":
 		photos, err := e.NasaApp.GetMarsPhoto(&entities.MarsRoverPhotosRequest{
 			Camera: constants.RoverCameraCHEMCAM,
-			Sol:    rand.Intn(1000) + 600,
+			Sol:    rand.Intn(1000) + 700,
 		})
 		if err != nil {
 			messageResponse.Message = constants.ServerErrorOccurred
@@ -141,16 +131,12 @@ func (e *EventService) NewMessage(c *gin.Context) {
 			messageResponse.Message = "Photo not found :("
 		} else {
 			index := rand.Intn(len(photos.Photos)) + 0
-			messageResponse.Message = "Rover: " + photos.Photos[index].Rover.Name
-			messageResponse.Message += "\n\nCamera: " + photos.Photos[index].Camera.FullName
-			messageResponse.Message += "\n\n" + "IMG: " + photos.Photos[index].ImgSrc
-			messageResponse.Message += "\n\n" + "Sol: " + fmt.Sprint(photos.Photos[index].Sol)
-			messageResponse.Message += "\n\n" + "Date: " + photos.Photos[index].EarthDate
+			messageResponse.Message = utils.PrepareMarsRoverPhotoMessage(&photos.Photos[index])
 		}
 	case "Test #2.2":
 		messageResponse.Message = "do - 6"
 	default:
-		messageResponse.Message = "I'm sorry, I don't understand you"
+		messageResponse.Message = constants.BotUnknownCommandsMsg[rand.Intn(len(constants.BotUnknownCommandsMsg))]
 	}
 
 	err := e.VkApp.SendMessage(messageResponse)
