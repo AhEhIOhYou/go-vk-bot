@@ -1,7 +1,6 @@
 package server
 
 import (
-	"fmt"
 	"log"
 	"math/rand"
 	"time"
@@ -18,14 +17,14 @@ func Serve() {
 
 	services, err := infrastructure.NewRepo()
 	if err != nil {
-		log.Fatal(fmt.Sprintf(constants.ServiceInitializationError, err))
+		log.Fatalf(constants.ServiceInitializationError, err)
 	}
 
 	event := interfaces.NewEventService(services.Vk, services.Nasa)
 
 	router := gin.Default()
 
-	router.POST("/", event.NewMessage)
+	router.POST("/vk", event.NewMessage)
 
 	log.Fatal(router.Run())
 }

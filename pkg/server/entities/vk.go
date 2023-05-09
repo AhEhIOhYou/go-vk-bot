@@ -9,6 +9,11 @@ type Event struct {
 	Secret  string                 `json:"secret"`
 }
 
+type ConfirmPost struct {
+	Type    string `json:"type"`
+	GroupID int    `json:"group_id"`
+}
+
 type MessageNew struct {
 	Message    MessageRequest `json:"message"`
 	ClientInfo ClientInfo     `json:"client_info"`

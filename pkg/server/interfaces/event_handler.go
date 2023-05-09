@@ -15,11 +15,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type ConfirmPost struct {
-	Type    string `json:"type"`
-	GroupID int    `json:"group_id"`
-}
-
 type EventService struct {
 	VkApp   infrastructure.VkRepo
 	NasaApp infrastructure.NasaRepo
@@ -45,6 +40,11 @@ func (e *EventService) NewMessage(c *gin.Context) {
 	if data.Secret != os.Getenv("VK_SECRET_KEY") {
 		c.JSON(http.StatusInternalServerError, constants.SecretWordMissmatch)
 		log.Print(constants.SecretWordMissmatch)
+		return
+	}
+
+	if data.Type == "confirmation" {
+		c.Data(http.StatusOK, "charset=utf8", []byte("bd70932e"))
 		return
 	}
 
@@ -133,8 +133,12 @@ func (e *EventService) NewMessage(c *gin.Context) {
 			index := rand.Intn(len(photos.Photos)) + 0
 			messageResponse.Message = utils.PrepareMarsRoverPhotoMessage(&photos.Photos[index])
 		}
-	case "Test #2.2":
-		messageResponse.Message = "do - 6"
+	case "Test":
+		messageResponse.Message = constants.TestSuccess
+	case "Commands":
+		messageResponse.Message = constants.BotCommands
+	case "Description":
+		messageResponse.Message = constants.BotDescription
 	default:
 		messageResponse.Message = constants.BotUnknownCommandsMsg[rand.Intn(len(constants.BotUnknownCommandsMsg))]
 	}
@@ -148,18 +152,4 @@ func (e *EventService) NewMessage(c *gin.Context) {
 	}
 
 	c.Data(http.StatusOK, "charset=utf8", []byte("ok"))
-}
-
-func (e *EventService) Confirm(c *gin.Context) {
-	var cfm *ConfirmPost
-
-	if err := c.ShouldBindJSON(&cfm); err != nil {
-		c.JSON(http.StatusInternalServerError, fmt.Sprintf(constants.RequestFailed, err))
-		log.Printf(constants.RequestFailed, err)
-		return
-	}
-
-	log.Println(cfm)
-
-	c.Data(http.StatusOK, "charset=utf8", []byte("ef5c48d6"))
 }

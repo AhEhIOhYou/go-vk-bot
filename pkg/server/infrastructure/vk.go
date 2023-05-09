@@ -75,10 +75,28 @@ func newKayboard() entities.Keyboard {
 					},
 				},
 				{
+					Color: "positive",
+					Action: entities.ButtonAction{
+						Type:  "text",
+						Label: "Test",
+					},
+				},
+			},
+			{
+				{
+					Color: "primary",
+					Action: entities.ButtonAction{
+						Type:  "text",
+						Label: "Description",
+					},
+				},
+			},
+			{
+				{
 					Color: "secondary",
 					Action: entities.ButtonAction{
 						Type:  "text",
-						Label: "Test #2.2",
+						Label: "Commands",
 					},
 				},
 			},
