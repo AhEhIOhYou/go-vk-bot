@@ -77,7 +77,7 @@ func (e *EventService) NewVkEvent(c *gin.Context) {
 	case "fhaz":
 		photos, err := e.NasaApp.GetMarsPhoto(&entities.MarsRoverPhotosRequest{
 			Camera: constants.RoverCameraFHAZ,
-			Sol:    rand.Intn(1000) + 600,
+			Sol:    rand.Intn(1200) + 800,
 		})
 		if err != nil {
 			messageResponse.Message = constants.ServerErrorOccurred
