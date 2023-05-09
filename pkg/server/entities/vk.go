@@ -59,3 +59,20 @@ type ButtonAction struct {
 	Link    string `json:"link,omitempty"`
 	Payload string `json:"payload,omitempty"`
 }
+
+type MessageUploadServerRequest struct {
+	PeerID      int    `json:"peer_id" url:"peer_id"`
+	AccessToken string `json:"access_token" url:"access_token"`
+	Version     string `json:"v" url:"v"`
+}
+
+type VkResponse struct {
+	Response MessageUploadServerRequest `json:"response"`
+}
+
+type MessageUploadServerResponse struct {
+	AlbumID   int    `json:"album_id"`
+	UploadUrl string `json:"upload_url"`
+	UserID    int    `json:"user_id"`
+	GroupID   int    `json:"group_id"`
+}

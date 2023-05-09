@@ -55,7 +55,7 @@ func (e *EventService) NewMessage(c *gin.Context) {
 	}
 
 	switch messageNew.Message.Text {
-	case "Test #1":
+	case "APOD":
 		messageResponse.Message = "do - 1"
 		apod, err := e.NasaApp.APOD()
 		if err != nil {
@@ -68,6 +68,16 @@ func (e *EventService) NewMessage(c *gin.Context) {
 		messageResponse.Message += "\n\n" + "IMG: " + apod.HDUrl
 	case "Test #2":
 		messageResponse.Message = "do - 2"
+		resp, err := e.VkApp.GetMessageUploadServer(&entities.MessageUploadServerRequest{
+			PeerID: messageNew.Message.PeerID,
+		})
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, fmt.Sprintf(constants.RequestFailed, err))
+			log.Println(err)
+			return
+		}
+		fmt.Println("RESPONSE UPLOAD:")
+		log.Println(resp)
 	case "Test #3":
 		messageResponse.Message = "do - 3"
 	case "Test #4":
