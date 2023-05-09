@@ -54,10 +54,6 @@ func (e *EventService) NewMessage(c *gin.Context) {
 		UserID: messageNew.Message.PeerID,
 	}
 
-	if data.Type == "message_event" {
-		log.Println(data)
-	}
-
 	switch messageNew.Message.Text {
 	case "Test #1":
 		messageResponse.Message = "do - 1"
