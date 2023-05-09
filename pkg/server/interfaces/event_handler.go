@@ -67,11 +67,10 @@ func (e *EventService) NewMessage(c *gin.Context) {
 		messageResponse.Message += "\n\n" + apod.Explanation
 		messageResponse.Message += "\n\n" + "IMG: " + apod.HDUrl
 		messageResponse.Message += "\n\n" + "Date: " + apod.Date
-	case "Test #2":
-		messageResponse.Message = "do - 2"
+	case "FHAZ":
 		photos, err := e.NasaApp.GetMarsPhoto(&entities.MarsRoverPhotosRequest{
 			Camera: constants.RoverCameraFHAZ,
-			Sol:    980,
+			Sol:    rand.Intn(1000) + 600,
 		})
 		if err != nil {
 			messageResponse.Message = constants.ServerErrorOccurred
@@ -81,19 +80,73 @@ func (e *EventService) NewMessage(c *gin.Context) {
 		if len(photos.Photos) == 0 {
 			messageResponse.Message = "Photo not found :("
 		} else {
-			index := rand.Intn(len(photos.Photos)) + 1
+			index := rand.Intn(len(photos.Photos)) + 0
 			messageResponse.Message = "Rover: " + photos.Photos[index].Rover.Name
 			messageResponse.Message += "\n\nCamera: " + photos.Photos[index].Camera.FullName
 			messageResponse.Message += "\n\n" + "IMG: " + photos.Photos[index].ImgSrc
 			messageResponse.Message += "\n\n" + "Sol: " + fmt.Sprint(photos.Photos[index].Sol)
 			messageResponse.Message += "\n\n" + "Date: " + photos.Photos[index].EarthDate
 		}
-	case "Test #3":
-		messageResponse.Message = "do - 3"
-	case "Test #4":
-		messageResponse.Message = "do - 4"
-	case "Test #2.1":
-		messageResponse.Message = "do - 5"
+	case "RHAZ":
+		photos, err := e.NasaApp.GetMarsPhoto(&entities.MarsRoverPhotosRequest{
+			Camera: constants.RoverCameraRHAZ,
+			Sol:    rand.Intn(1000) + 600,
+		})
+		if err != nil {
+			messageResponse.Message = constants.ServerErrorOccurred
+			log.Printf(constants.RequestFailed, err)
+			break
+		}
+		if len(photos.Photos) == 0 {
+			messageResponse.Message = "Photo not found :("
+		} else {
+			index := rand.Intn(len(photos.Photos)) + 0
+			messageResponse.Message = "Rover: " + photos.Photos[index].Rover.Name
+			messageResponse.Message += "\n\nCamera: " + photos.Photos[index].Camera.FullName
+			messageResponse.Message += "\n\n" + "IMG: " + photos.Photos[index].ImgSrc
+			messageResponse.Message += "\n\n" + "Sol: " + fmt.Sprint(photos.Photos[index].Sol)
+			messageResponse.Message += "\n\n" + "Date: " + photos.Photos[index].EarthDate
+		}
+	case "MAST":
+		photos, err := e.NasaApp.GetMarsPhoto(&entities.MarsRoverPhotosRequest{
+			Camera: constants.RoverCameraMAST,
+			Sol:    rand.Intn(1000) + 600,
+		})
+		if err != nil {
+			messageResponse.Message = constants.ServerErrorOccurred
+			log.Printf(constants.RequestFailed, err)
+			break
+		}
+		if len(photos.Photos) == 0 {
+			messageResponse.Message = "Photo not found :("
+		} else {
+			index := rand.Intn(len(photos.Photos)) + 0
+			messageResponse.Message = "Rover: " + photos.Photos[index].Rover.Name
+			messageResponse.Message += "\n\nCamera: " + photos.Photos[index].Camera.FullName
+			messageResponse.Message += "\n\n" + "IMG: " + photos.Photos[index].ImgSrc
+			messageResponse.Message += "\n\n" + "Sol: " + fmt.Sprint(photos.Photos[index].Sol)
+			messageResponse.Message += "\n\n" + "Date: " + photos.Photos[index].EarthDate
+		}
+	case "CHEMCAM":
+		photos, err := e.NasaApp.GetMarsPhoto(&entities.MarsRoverPhotosRequest{
+			Camera: constants.RoverCameraCHEMCAM,
+			Sol:    rand.Intn(1000) + 600,
+		})
+		if err != nil {
+			messageResponse.Message = constants.ServerErrorOccurred
+			log.Printf(constants.RequestFailed, err)
+			break
+		}
+		if len(photos.Photos) == 0 {
+			messageResponse.Message = "Photo not found :("
+		} else {
+			index := rand.Intn(len(photos.Photos)) + 0
+			messageResponse.Message = "Rover: " + photos.Photos[index].Rover.Name
+			messageResponse.Message += "\n\nCamera: " + photos.Photos[index].Camera.FullName
+			messageResponse.Message += "\n\n" + "IMG: " + photos.Photos[index].ImgSrc
+			messageResponse.Message += "\n\n" + "Sol: " + fmt.Sprint(photos.Photos[index].Sol)
+			messageResponse.Message += "\n\n" + "Date: " + photos.Photos[index].EarthDate
+		}
 	case "Test #2.2":
 		messageResponse.Message = "do - 6"
 	default:

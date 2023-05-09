@@ -31,7 +31,7 @@ type MarsRoverPhoto struct {
 	Sol       int             `json:"sol"`
 	Camera    MarsRoverCamera `json:"camera"`
 	ImgSrc    string          `json:"img_src"`
-	EarthDate string          `json:"string"`
+	EarthDate string          `json:"earth_date"`
 	Rover     MarsRover       `json:"rover"`
 }
 
