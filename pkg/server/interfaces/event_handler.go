@@ -64,8 +64,8 @@ func (e *EventService) NewMessage(c *gin.Context) {
 			return
 		}
 		messageResponse.Message = apod.Title
-		messageResponse.Message += "\n" + apod.Explanation
-		messageResponse.Message += "\n" + apod.HDUrl
+		messageResponse.Message += "\n\n" + apod.Explanation
+		messageResponse.Message += "\n\n" + "IMG: " + apod.HDUrl
 	case "Test #2":
 		messageResponse.Message = "do - 2"
 	case "Test #3":
