@@ -15,15 +15,18 @@ func Serve() {
 
 	rand.Seed(time.Now().Unix())
 
+	// Creating services with repos
 	services, err := infrastructure.NewRepo()
 	if err != nil {
 		log.Fatalf(constants.ServiceInitializationError, err)
 	}
 
+	// Creating event service
 	event := interfaces.NewEventService(services.Vk, services.Nasa)
 
 	router := gin.Default()
 
+	// Routes processing
 	router.POST("/", event.NewVkEvent)
 
 	log.Fatal(router.Run())

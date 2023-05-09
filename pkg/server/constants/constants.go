@@ -43,5 +43,5 @@ var BotUnknownCommandsMsg = []string{
 	"I'm afraid I don't understand what you're asking. Please choose from the available options.",
 	"That's not something I'm capable of doing. Is there anything else I can help you with?",
 	"My apologies, but I don't have the ability to engage in casual conversation.",
-	"I'm designed to assist with specific tasks and questions. Is there something specific you need?",
+	"I'm designed to assist with specific tasks. Is there something specific you need?",
 }

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"math/rand"
 	"net/http"
 
@@ -141,8 +140,9 @@ func (r *VkRepo) SendMessage(message *entities.MessageResponse) error {
 		return fmt.Errorf(constants.RequestFailed, err)
 	}
 
-	log.Println("Resp:")
-	log.Println(resp.Status)
+	if resp.StatusCode != 200 {
+		return fmt.Errorf(constants.RequestFailed)
+	}
 
 	return nil
 }

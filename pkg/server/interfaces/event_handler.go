@@ -44,12 +44,11 @@ func (e *EventService) NewVkEvent(c *gin.Context) {
 	}
 
 	if data.Type == "confirmation" {
-		c.Data(http.StatusOK, "charset=utf8", []byte("bd70932e"))
+		c.Data(http.StatusOK, "charset=utf8", []byte(os.Getenv("VK_API_CONFIRM")))
 		return
 	}
 
 	// Object can be different types, so i use interface
-
 	// There should be a switch case here, but so far we are working only with message_new, so there is no need
 
 	var messageNew entities.MessageNew
@@ -60,7 +59,10 @@ func (e *EventService) NewVkEvent(c *gin.Context) {
 		UserID: messageNew.Message.PeerID,
 	}
 
+	// Message processing
 	switch messageNew.Message.Text {
+	case "Начать":
+		messageResponse.Message = constants.BotDescription
 	case "APOD":
 		apod, err := e.NasaApp.APOD()
 		if err != nil {
