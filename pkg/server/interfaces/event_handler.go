@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/constants"
 	"github.com/AhEhIOhYou/go-vk-bot/pkg/server/entities"
@@ -60,10 +61,12 @@ func (e *EventService) NewVkEvent(c *gin.Context) {
 	}
 
 	// Message processing
-	switch messageNew.Message.Text {
-	case "Начать":
-		messageResponse.Message = constants.BotDescription
-	case "APOD":
+
+	text := strings.ToLower(messageNew.Message.Text)
+
+	// Switch-case to fine-tune actions
+	switch text {
+	case "apod":
 		apod, err := e.NasaApp.APOD()
 		if err != nil {
 			messageResponse.Message = constants.ServerErrorOccurred
@@ -71,7 +74,7 @@ func (e *EventService) NewVkEvent(c *gin.Context) {
 			break
 		}
 		messageResponse.Message = utils.PrepareAPODMessage(apod)
-	case "FHAZ":
+	case "fhaz":
 		photos, err := e.NasaApp.GetMarsPhoto(&entities.MarsRoverPhotosRequest{
 			Camera: constants.RoverCameraFHAZ,
 			Sol:    rand.Intn(1000) + 600,
@@ -87,7 +90,7 @@ func (e *EventService) NewVkEvent(c *gin.Context) {
 			index := rand.Intn(len(photos.Photos)) + 0
 			messageResponse.Message = utils.PrepareMarsRoverPhotoMessage(&photos.Photos[index])
 		}
-	case "RHAZ":
+	case "rhaz":
 		photos, err := e.NasaApp.GetMarsPhoto(&entities.MarsRoverPhotosRequest{
 			Camera: constants.RoverCameraRHAZ,
 			Sol:    rand.Intn(1000) + 800,
@@ -103,7 +106,7 @@ func (e *EventService) NewVkEvent(c *gin.Context) {
 			index := rand.Intn(len(photos.Photos)) + 0
 			messageResponse.Message = utils.PrepareMarsRoverPhotoMessage(&photos.Photos[index])
 		}
-	case "MAST":
+	case "mast":
 		photos, err := e.NasaApp.GetMarsPhoto(&entities.MarsRoverPhotosRequest{
 			Camera: constants.RoverCameraMAST,
 			Sol:    rand.Intn(1000) + 800,
@@ -119,7 +122,7 @@ func (e *EventService) NewVkEvent(c *gin.Context) {
 			index := rand.Intn(len(photos.Photos)) + 0
 			messageResponse.Message = utils.PrepareMarsRoverPhotoMessage(&photos.Photos[index])
 		}
-	case "CHEMCAM":
+	case "chemcam":
 		photos, err := e.NasaApp.GetMarsPhoto(&entities.MarsRoverPhotosRequest{
 			Camera: constants.RoverCameraCHEMCAM,
 			Sol:    rand.Intn(1000) + 700,
@@ -135,14 +138,19 @@ func (e *EventService) NewVkEvent(c *gin.Context) {
 			index := rand.Intn(len(photos.Photos)) + 0
 			messageResponse.Message = utils.PrepareMarsRoverPhotoMessage(&photos.Photos[index])
 		}
-	case "Test":
+	case "test":
 		messageResponse.Message = constants.TestSuccess
-	case "Commands":
+	case "commands":
 		messageResponse.Message = constants.BotCommands
-	case "Description":
+	case "description":
 		messageResponse.Message = constants.BotDescription
 	default:
-		messageResponse.Message = constants.BotUnknownCommandsMsg[rand.Intn(len(constants.BotUnknownCommandsMsg))]
+		if utils.Contains(constants.Greetings, text) {
+			messageResponse.Message = constants.BotDescription
+			messageResponse.Message += "\n\n" + constants.BotCommands
+		} else {
+			messageResponse.Message = constants.BotUnknownCommandsMsg[rand.Intn(len(constants.BotUnknownCommandsMsg))]
+		}
 	}
 
 	err := e.VkApp.SendMessage(messageResponse)

@@ -24,3 +24,13 @@ func PrepareMarsRoverPhotoMessage(photo *entities.MarsRoverPhoto) string {
 	resultStr += "\n\n" + "Date: " + photo.EarthDate
 	return resultStr
 }
+
+// Amazing generics!
+func Contains[T comparable](elems []T, v T) bool {
+	for _, s := range elems {
+		if v == s {
+			return true
+		}
+	}
+	return false
+}
